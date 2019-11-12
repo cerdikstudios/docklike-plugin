@@ -91,9 +91,6 @@ namespace Dock
 
 		mPanelSize = size;
 
-		#if LIBXFCE4PANEL_CHECK_VERSION(4,13,0)
-			mIconSize = xfce_panel_plugin_get_icon_size(XFCE_PANEL_PLUGIN(Plugin::mXfPlugin));
-		#else
 			GtkStyleContext* context = gtk_widget_get_style_context(GTK_WIDGET(mGroups.first()->mButton));
 			GtkBorder padding, border;
 			gtk_style_context_get_padding (context, gtk_widget_get_state_flags(GTK_WIDGET(mBox)), &padding);
@@ -111,7 +108,6 @@ namespace Dock
 				mIconSize = 32;
 			else
 				mIconSize = width;
-		#endif
 
 		mGroups.forEach([](std::pair<AppInfo*, Group*> g)->void { g.second->resize(); });
 	}
