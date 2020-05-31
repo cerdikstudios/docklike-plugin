@@ -13,9 +13,10 @@ plugin_LTLIBRARIES = libdocklike.la
 
 # List of source files needed to build the library
 libdocklike_la_SOURCES = \
+						Hotkeys.cpp Hotkeys.hpp \
 						Theme.cpp Theme.hpp \
 						AppInfos.cpp AppInfos.hpp \
-						Config.cpp Config.hpp \
+						Settings.cpp Settings.hpp \
 						Group.cpp Group.hpp \
 						GroupMenu.cpp GroupMenu.hpp \
 						GroupMenuItem.cpp GroupMenuItem.hpp \
@@ -24,25 +25,32 @@ libdocklike_la_SOURCES = \
 						Plugin.cpp Plugin.hpp \
 						Dock.cpp Dock.hpp \
 						Wnck.cpp Wnck.hpp \
-						register.c
+						SettingsDialog.cpp SettingsDialog.hpp \
+						register.c \
+						_gresources.c
 
 libdocklike_la_LDFLAGS = \
-                      -avoid-version \
-                      -module \
-                      -no-undefined \
-    -export-symbols-regex '^xfce_panel_module_(preinit|init|construct)'
+						-avoid-version \
+						-module \
+						-no-undefined \
+						-export-symbols-regex '^xfce_panel_module_(preinit|init|construct)'
 
 
 libdocklike_la_CPPFLAGS = \
-                        @LIBXFCE4PANEL_CFLAGS@ \
-                        @LIBXFCE4UI_CFLAGS@
+						@LIBXFCE4PANEL_CFLAGS@ \
+						@LIBXFCE4UI_CFLAGS@ \
+						$(X11_CFLAGS)
 
 libdocklike_la_LIBADD = \
-                        @LIBXFCE4PANEL_LIBS@ \
-                        @LIBXFCE4UI_LIBS@ \
-                        $(GTK_LIBS) \
+						@LIBXFCE4PANEL_LIBS@ \
+						@LIBXFCE4UI_LIBS@ \
+						$(X11_LIBS) \
+						$(GTK_LIBS) \
 						$(CAIRO_LIBS) \
 						$(WNCK_LIBS)
+
+_gresources.c: _gresources.xml _dialogs.xml
+	glib-compile-resources --generate-source --target _gresources.c _gresources.xml
 
 
 # Recently (>=2017) dependent libraries seem to require building with
